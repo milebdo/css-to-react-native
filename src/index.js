@@ -21,11 +21,18 @@ const transforms = [
   'transform',
 ];
 
-const transformRawValue = input => (
-  (input !== '' && !isNaN(input))
-    ? Number(input)
-    : input
-);
+const boolRe = /^true|false$/i;
+
+const transformRawValue = (input) => {
+  const value = input.trim();
+
+  if (input !== '' && !isNaN(input)) return Number(input);
+
+  const boolMatch = input.match(boolRe);
+  if (boolMatch) return boolMatch[0].toLowerCase() === 'true';
+
+  return value;
+};
 
 export const getStylesForProperty = (propName, inputValue) => {
   const value = inputValue.trim();
